@@ -1,3 +1,6 @@
+# 人事行政系統自動化
+# 功能包含: 自動化登入、代理假單、查詢刷卡資料、假單登記
+
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchWindowException
@@ -16,18 +19,11 @@ offtime = None
 offdt_date_path = r"C:\tpc\offdt_date.txt"
 offdt_time_path = r"C:\tpc\offdt_time.txt"
 offregistered = False
+
+# BgInfo: 在桌面顯示下班時間，須另外下載
 bginfo_path = r"C:\Program Files\BGInfo\Bginfo64.exe"
 bginfoconfig_path = r"C:\Program Files\BGInfo\config.bgi"
 
-def login_by_keys():
-    for _ in range(5):
-        userid = wait.until(EC.element_to_be_clickable((By.NAME, "userid")))
-        userid.send_keys(Keys.ARROW_DOWN)
-        userid.send_keys(Keys.ARROW_DOWN)
-        userid.send_keys(Keys.ENTER)
-        if userid.get_attribute('value') != '':
-            break
-        driver.refresh()
 def accept_all_alert():
     while True:
         try:
@@ -44,7 +40,7 @@ options.initial_browser_url = "http://sso.taipower.com.tw/"
 driver = webdriver.Ie(service=service, options=options)
 wait = WebDriverWait(driver, 5)
 
-# SSO
+# SSO: 使用記住的帳號密碼
 for _ in range(5):
     if 'sso' not in driver.current_url:
         driver.get("http://sso.taipower.com.tw/")
@@ -69,6 +65,7 @@ for handle in driver.window_handles:
 driver.switch_to.window(driver.window_handles[0])
 wait.until(EC.title_contains('人事行政'))
 
+# 刷卡資料更新
 def offdt_update():
     global offtime
     if offtime is not None:
@@ -96,6 +93,7 @@ def offdt_update():
     driver.switch_to.window(driver.window_handles[0])
     subprocess.run([bginfo_path, bginfoconfig_path, '/timer:0', '/silent', '/nolicprompt'])                    
 
+# 代理人簽核
 def agent_approve():
     for handle in driver.window_handles:
         driver.switch_to.window(handle)
@@ -114,6 +112,7 @@ def agent_approve():
         pass
     driver.switch_to.default_content()
 
+# 請假申請
 def off_reg():
     start_time = datetime.now() + timedelta(minutes=3)
     # if start_time > datetime.now().replace(hour=12, minute=0): return
@@ -159,7 +158,7 @@ while True:
         offdt_update()
         if datetime.now().weekday() == 2 and not offregistered:
             off_reg()
-        off_reg()
+        # off_reg()
         sleep(5)
         driver.refresh()
     except UnexpectedAlertPresentException:
