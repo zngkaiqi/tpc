@@ -42,14 +42,14 @@ wait = WebDriverWait(driver, 5)
 # SSO: 使用記住的帳號密碼
 for _ in range(5):
     if 'sso' not in driver.current_url:
-        driver.get("http://sso.taipower.com.tw/")
+        driver.get("http://sso.********.com.tw/")
     userid = wait.until(EC.element_to_be_clickable((By.NAME, "userid")))
     # userid.send_keys("076531")
     userid.send_keys(Keys.ARROW_DOWN)
     userid.send_keys(Keys.ARROW_DOWN)
     userid.send_keys(Keys.ENTER)
     driver.execute_script("goSubmit();")
-    wait.until(EC.url_contains("sso.taipower.com.tw/wps/myportal"))
+    wait.until(EC.url_contains("sso.********.com.tw/wps/myportal"))
     if 'myportal' in driver.current_url: break
     else: driver.refresh()
         
