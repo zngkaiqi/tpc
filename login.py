@@ -35,8 +35,7 @@ def accept_all_alert():
 service = Service('./IEDriverServer.exe')
 options = webdriver.IeOptions()
 options.attach_to_edge_chrome = True
-# options.initial_browser_url = "http://sso.taipower.com.tw/wps/portal/0/login/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zi_QwNLTxMLAz83Q0tDQwCLUwCnVwN_YwNAk31wwkpiAJKG-AAjgb6BbmhigBUllSD/dz/d5/L2dBISEvZ0FBIS9nQSEh/"
-options.initial_browser_url = "http://sso.taipower.com.tw/"
+options.initial_browser_url = "http://sso.********.com.tw/"
 driver = webdriver.Ie(service=service, options=options)
 wait = WebDriverWait(driver, 5)
 
@@ -55,7 +54,7 @@ for _ in range(5):
     else: driver.refresh()
         
 # 人事行政
-driver.get("http://sso.taipower.com.tw/wps/myportal/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8zi_QwNLTxMLAz83Q0tDQwCLUwCnVwN_YwNQs30wwkpiAJKG-AAjgb6BbmhigDgayq3/dz/d5/L2dJQSEvUUt3QS80TmxFL1o2X04xMThINDgwT0cxOTAwUTg0UUJFMU4zR0kx/")
+driver.get("http://sso.********.com.tw/")
 accept_all_alert()
 for handle in driver.window_handles:
     driver.switch_to.window(handle)
@@ -74,7 +73,7 @@ def offdt_update():
                 f.write(f"({datetime.now().month}/{datetime.now().day})")
         return
     driver.switch_to.new_window('tab')
-    driver.get("http://stpc02402199.taipower.com.tw/PBS/EI/EI0100MainClassX.asp")
+    driver.get("http://********.com.tw/")
     driver.switch_to.frame("EItop")
     driver.execute_script("submitcheck6();") # 刷卡資料查詢.click()
     driver.switch_to.default_content()
@@ -120,7 +119,7 @@ def off_reg():
     tdelta = end_time - start_time - timedelta(minutes=40) if start_time < datetime.now().replace(hour=12, minute=0) else end_time - start_time
     time_total = int(tdelta.total_seconds()/3600) if tdelta.total_seconds() % 3600 == 0 else int(tdelta.total_seconds()/3600) + 1
     driver.switch_to.new_window('tab')
-    driver.get("http://stpc02402199.taipower.com.tw/PBS/EI/EI0100MainClassX.asp")
+    driver.get("http://********.com.tw/")
     driver.switch_to.frame("EItop")
     driver.execute_script("arguments[0].click();", driver.find_element(By.LINK_TEXT, "差假管理"))
     driver.switch_to.default_content()
